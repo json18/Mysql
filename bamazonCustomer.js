@@ -1,5 +1,8 @@
+
+
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+require ("console.table");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -16,11 +19,24 @@ connection.connect(function(err) {
     return;
   }
   console.log("connected as id " + connection.threadId);
-  start();
 });
 
+function getProduct() {
+  connection.query("SELECT * FROM products", function(err, res){
+    if (err) {
+      console.log("err")
+    }
+    else {
+      console.table(res)
+      promptUsers(res);
+  
+    }
+  })
+};
 
-  function postAuction() {
+getProduct();
+
+  function promptUsers(currentInventory) {
     inquirer
       .prompt([
         {
@@ -35,17 +51,31 @@ connection.connect(function(err) {
         },
       ])
       .then(function(answer) {
-        connection.query(
-          "INSERT INTO bamazon SET ?",
-          {
-            
-          },
-          function(err) {
-            if (err) throw err;
-            console.log("Your auction was created successfully!");
-            // re-prompt the user for if they want to bid or post
-            start();
+        console.log("answer", answer)
+
+        for (var i = 0; i< currentInventory.length; i++) {
+          if (answer.item = currentInventory[i].item_id) {
+            console.log("current Inventory", currentInventory[i].item_id);
+            updateProduct(answer.item, answer.units, currentInventory[i].stock_quantity);
           }
-        );
-      });
-  }
+          else {
+            return;
+          }   
+          }
+        })
+      };
+    
+  
+    function updateProduct(item_id, quantityPurchased, currentStock) {
+      var updatedStock = currentStock - quantityPurchased;
+      console.log("updated Stock", updatedStock);
+      connection.query("UPDATE products SET stock_quantity = updatedStock", function(err, res){
+        if (err) {
+          console.log("err")
+        }
+        else {
+          console.log("thank you for your purchase");
+          console.table(res);
+        }
+      })
+    };

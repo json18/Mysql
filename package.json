@@ -10,6 +10,8 @@
   "license": "ISC",
   "homepage": "https://github.com/json18/Mysql#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^5.2.0",
     "mysql": "^2.13.0"
   }
 }
