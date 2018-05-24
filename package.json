@@ -1,0 +1,19 @@
+{
+  "name": "mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/json18/Mysql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/json18/Mysql/issues"
+  },
+  "homepage": "https://github.com/json18/Mysql#readme"
+}
