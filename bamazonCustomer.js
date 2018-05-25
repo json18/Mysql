@@ -24,7 +24,7 @@ connection.connect(function(err) {
 function getProduct() {
   connection.query("SELECT * FROM products", function(err, res){
     if (err) {
-      console.log("err")
+      console.log("the error is at getProduct", err)
     }
     else {
       console.table(res)
@@ -54,8 +54,8 @@ getProduct();
         console.log("answer", answer)
 
         for (var i = 0; i< currentInventory.length; i++) {
-          if (answer.item = currentInventory[i].item_id) {
-            console.log("current Inventory", currentInventory[i].item_id);
+          if (answer.item === currentInventory[i].item_id) {
+            console.log("ID of item we are changing", currentInventory[i].item_id);
             updateProduct(answer.item, answer.units, currentInventory[i].stock_quantity);
           }
           else {
@@ -68,14 +68,22 @@ getProduct();
   
     function updateProduct(item_id, quantityPurchased, currentStock) {
       var updatedStock = currentStock - quantityPurchased;
+      if (updatedStock < 0) {
+        console.log("Insufficient quantity")
+      }
+
+
+
       console.log("updated Stock", updatedStock);
-      connection.query("UPDATE products SET stock_quantity = updatedStock", function(err, res){
+      connection.query("UPDATE products SET stock_quantity = ?", [updatedStock], function(err, res){
         if (err) {
-          console.log("err")
+          console.log("the error is at updateProduct", err)
         }
         else {
           console.log("thank you for your purchase");
           console.table(res);
         }
       })
+
+  
     };
